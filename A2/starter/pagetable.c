@@ -205,7 +205,7 @@ char *find_physpage(addr_t vaddr, char type) {
 			// physical frame should be allocated and filled by reading the
 			// page data from swap.
 			p->frame = allo_p << PAGE_SHIFT;
-			P->frame = p->frame | PG_DIRTY;
+			p->frame = p->frame | PG_DIRTY;
 		} else{
 			swap_pagein(allo_p, p->swap_off);
 			p->frame = allo_p << PAGE_SHIFT;
