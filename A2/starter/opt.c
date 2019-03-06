@@ -10,6 +10,8 @@ extern int memsize;
 
 extern int debug;
 
+extern char *tracefile;
+
 extern struct frame *coremap;
 
 
@@ -68,7 +70,7 @@ int opt_evict() {
  */
 void opt_ref(pgtbl_entry_t *p) {
     current_index += 1;
-    current_add = p->frame >> PAGE_SHIFT;
+    int current_add = p->frame >> PAGE_SHIFT;
     if(current_index < memsize){
         addr_memory_list[current_add] = track_add_list[current_index];
     }
@@ -108,9 +110,9 @@ void opt_init() {
         perror("Error for reading tracefile");
         exit(1);
     }
-    index = 0;
+    int index = 0;
     while(fgets(buf, MAXLINE, track_file1) != NULL){
-        if(bug[0] != '='){
+        if(buf[0] != '='){
             sscanf(buf, "%c %lx", &type, &vaddr);
             track_add_list[index] = vaddr;
             index += 1;

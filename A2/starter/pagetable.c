@@ -200,7 +200,7 @@ char *find_physpage(addr_t vaddr, char type) {
 	//  the entry is invalid
 	} else {
 		miss_count++;
-		int allo_p = allocate_frame(p)
+		int allo_p = allocate_frame(p);
 		// is not on swap
 		if(!(p->frame & PG_ONSWAP)){
 			// physical frame should be allocated and filled by reading the
