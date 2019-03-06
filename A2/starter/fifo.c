@@ -17,18 +17,10 @@ extern struct frame *coremap;
  * for the page that is to be evicted.
  */
 
-int *queue;
 int index;
 int fifo_evict() {
-    int res = queue[0];
-    int i;
-    for(i = 0 ; i < memsize-1; i ++){
-        queue[i] = queue[i+1];
-
-    }
-    index--;
-	
-	return res;
+    index = (index + 1) % memsize;
+	return index;
 }
 
 /* This function is called on each access to a page to update any information
@@ -36,14 +28,7 @@ int fifo_evict() {
  * Input: The page table entry for the page that is being accessed.
  */
 void fifo_ref(pgtbl_entry_t *p) {
-    int i;
-    for(i = 0; i<index; i++){
-        if(queue[i] == (p->frame >> PAGE_SHIFT)){
-            return;
-        }
-    }
-    queue[index] = p->frame >> PAGE_SHIFT;
-    index++;
+    return;
 
 	
 }
@@ -52,7 +37,5 @@ void fifo_ref(pgtbl_entry_t *p) {
  * replacement algorithm 
  */
 void fifo_init() {
-    queue = malloc(sizeof(int) * memsize);
-    index = 0;
-
+    index = -1;
 }

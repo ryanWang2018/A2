@@ -26,7 +26,6 @@ or reverse in order to simplify the implementation.
 
 int *ls;
 int index;
-
 int lru_evict() {
     int delete = ls[0];
     int i;
@@ -52,20 +51,15 @@ void lru_ref(pgtbl_entry_t *p) {
             int j;
             for(j = i; j<index; j++){
                 ls[j] = ls[j+1];
-
             }
             ls[index-1] = frame_number;
             return;
         }
-
     }
     ls[index+1] = frame_number;
     index++;
-
 	return;
 }
-
-
 /* Initialize any data structures needed for this 
  * replacement algorithm 
  */
