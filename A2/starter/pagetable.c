@@ -195,7 +195,6 @@ char *find_physpage(addr_t vaddr, char type) {
 	// if p is valid
 	if (p->frame & PG_VALID){
 		hit_count++;
-		ref_count++;
 	
 	//  the entry is invalid
 	} else {
@@ -205,12 +204,14 @@ char *find_physpage(addr_t vaddr, char type) {
 		if(!(p->frame & PG_ONSWAP)){
 			// physical frame should be allocated and filled by reading the
 			// page data from swap.
-			init_frame(allo_p, vaddr);
+			p->frame = allo_p << PAGE_SHIFT;
+			P->frame = p->frame | PG_DIRTY;
 		} else{
 			swap_pagein(allo_p, p->swap_off);
+			p->frame = allo_p << PAGE_SHIFT;
+			p->frame &= ~PG_DIRTY;
 		}
-		coremap[allo_p].vaddr = vaddr;
-		p->frame = allo_p << PAGE_SHIFT;
+	
 	}
 
 	// // if p is on swap
