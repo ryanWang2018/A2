@@ -1,0 +1,23 @@
+paging table: is to store address translations for each of the virtual pages of the address space, thus letting us know where in physical memory each page resides.
+
+** the page number is per-process data structure.
+
+movl <virtual address>, %eax: load of the data from addre <virtual address> into the register eax(and thus ignore the instruction fetch that must have happened prior)
+
+** since we have 64-bytes, we need 6 bits for out virtual address 
+
+** also, the page size is 16 bytes in a 64-byte address space; thus we need to be able to select 4 pages, and the top 2 bits of the address do just that. thus we have 2-bit virtual page number. the remaining bits tell us which byte of the page er are interested in. 4 bits in this case; we call this the offset.(the first 2 bits tell which portion of the address space, and the last 4 are the specific byte of the page we are interesting.)
+
+movl 21, %eax: turning 21 into binary, we get 010101.Thus the virtual address 21 is on the 5th byte of virtual page 1. with our virtual page number, we can now index out page table above the physical frame virtual page 1 resides within.
+
+translation from VPN TO PFN: first, translate the virtual address 21 into the correct physical address(117). Then before fetching the data from address 117, thesystem must first fetch the data from address 117, the system must first fetch the proper page table entry from the process's page table, perform the translation, and then load the data from physical memory.
+
+
+VPN = (VirtualAddress & VPN_MASK) >> SHIFT
+
+PTEADDR = PageTableBaseRegister + (VPN * sizeof(PTE))
+
+offset = VirtualAddress & OFFSET_MASK
+physAddr = (PEN << SHIFT) | offset
+
+
