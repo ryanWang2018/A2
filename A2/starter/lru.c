@@ -28,13 +28,13 @@ int *ls;
 int index;
 
 int lru_evict() {
-	int delete = ls[0]
+    int delete = ls[0];
     int i;
-    for (i = 1, i < memsize; i++){
+    for (i = 1; i < memsize; i++){
         ls[i-1] = ls[i];
     }
     index--;
-	return delete;
+    return delete;
 }
 
 /* This function is called on each access to a page to update any information
@@ -49,7 +49,7 @@ void lru_ref(pgtbl_entry_t *p) {
     // we move this frame to the end list as the newly accessed.
     for (i = 0; i < index; i++ ){
         if(ls[i] == frame_number){
-            int j
+            int j;
             for(j = i; j<index; j++){
                 ls[j] = ls[j+1];
 

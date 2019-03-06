@@ -42,7 +42,7 @@ void fifo_ref(pgtbl_entry_t *p) {
             return;
         }
     }
-    stack[idx] = p->frame >> PAGE_SHIFT;
+    queue[index] = p->frame >> PAGE_SHIFT;
     index++;
 
 	
@@ -52,7 +52,7 @@ void fifo_ref(pgtbl_entry_t *p) {
  * replacement algorithm 
  */
 void fifo_init() {
-    stack = malloc(sizeof(int) * memsize);
+    queue = malloc(sizeof(int) * memsize);
     index = 0;
 
 }

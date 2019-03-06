@@ -65,9 +65,8 @@ int allocate_frame(pgtbl_entry_t *p) {
 	if(frame == -1) { // Didn't find a free page.
 		// Call replacement algorithm's evict function to select victim
 		frame = evict_fcn();
-		if(frame != NULL){
-			pgtbl_entry_t *old_p = coremap[frame].pte;
-		}
+		pgtbl_entry_t *old_p = coremap[frame].pte;
+
 		// check if it has been accessed.
 		if(old_p->frame & PG_DIRTY){
 			evict_dirty_count ++;
@@ -186,7 +185,7 @@ char *find_physpage(addr_t vaddr, char type) {
 	// Use top-level page directory to get pointer to 2nd-level page table
 	//(void)idx; // To keep compiler happy - remove when you have a real use.
 
-	if (pgdir[idx].pde == 0){
+	if (pgdir[idx].pde & PG_VALID){
 		pgdir[idx] = init_second_level();
 	}
 
@@ -202,7 +201,7 @@ char *find_physpage(addr_t vaddr, char type) {
 	if (p->frame & PG_VALID){
 		hit_count++;
 		ref_count++;
-		p->frame = (allocate_frame(p)) << PAGE_SHIFT;
+		
 	} else {
 		miss_count++;
 		p->frame = (allocate_frame(p)) << PAGE_SHIFT;

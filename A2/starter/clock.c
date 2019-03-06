@@ -39,7 +39,7 @@ int clock_evict() {
     pgtbl_entry_t *p;
 
     while(i<index){
-        p = coremap[stack[i]].pte;
+        p = coremap[lst[i]].pte;
         int R = p->frame & PG_REF;
         if(R == 1){
             // clear R and move the hand to the next page
